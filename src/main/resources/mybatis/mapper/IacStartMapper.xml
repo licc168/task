@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="IacStartMapper">
+  <resultMap id="BaseResultMap" type="com.licc.task.vo.IacAdVo">
+    <id column="id" property="id" jdbcType="BIGINT"/>
+    <result column="user_id" property="userId" jdbcType="BIGINT"/>
+    <result column="url" property="url" jdbcType="VARCHAR"/>
+    <result column="praise_num" property="praiseNum" jdbcType="INTEGER"/>
+    <result column="status" property="status" jdbcType="INTEGER"/>
+    <result column="max_browse_num" property="maxBrowseNum" jdbcType="INTEGER"/>
+    <result column="max_praise_num" property="maxPraiseNum" jdbcType="INTEGER"/>
+    <result column="browse_num" property="browseNum" jdbcType="INTEGER"/>
+
+  </resultMap>
+  <sql id="Base_Column_List">
+    istart.id  ,  istart.user_id  , istart.url ,istart.praise_num,
+    istart.status,istart.max_browse_num,istart.max_praise_num,
+    istart.browse_num
+  </sql>
+
+  <select id="findList" parameterType="Object" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    from iac_ad as istart
+    where istart.delete_flag = 0
+    <if test="type==0">
+      and istart.status in (0,1)
+    </if>
+    order by istart.create_time DESC
+
+  </select>
+
+
+  <update id="updateStatus">
+    update iac_ad set status=1 where status=0 and delete_flag =0
+
+  </update>
+
+
+</mapper>
